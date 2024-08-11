@@ -3,13 +3,15 @@
 import { useEffect, useMemo, useState } from "react";
 import SelectedCity from "@/components/Molecules/SelectedCity";
 import { fetchCities } from "@/services/reservamosApi";
-import { City } from "@/services/types";
+import { fetchWatherByCity } from "@/services/openWeatherApi";
+import { City, WeatherData } from "@/services/types";
 import { Option } from "@/components/types";
+import { formatDateTime } from "@/app/utils";
 
 export default function Layout() {
   const [selectedCity, setSelectedCity] = useState<string>('');
   const [citiesData, setCitiesData] = useState<City[]>([]);
-  const [weatherData, setWeatherData] = useState<any>(null);
+  const [weatherData, setWeatherData] = useState<WeatherData>();
 
   // Memoized options for cities dropdown
   const optionsCities: Option[] = useMemo(() => {
@@ -40,6 +42,26 @@ export default function Layout() {
     getCities();
   }, []);
 
+  // Fetch weather data when selectedCity changes
+  useEffect(() => {
+    const getWeather = async () => {
+      const cityGeolocation = getCityGeolocation(selectedCity);
+      if (!cityGeolocation) return;
+
+      try {
+        const weatherData: WeatherData = await fetchWatherByCity(cityGeolocation.lat, cityGeolocation.long);
+        setWeatherData(weatherData);
+      } catch (error) {
+        console.error('Failed to fetch weather data:', error);
+      }
+    };
+
+    if (selectedCity) {
+      getWeather();
+    }
+  }, [selectedCity]);
+
+
   return (
     <div>
       <SelectedCity
@@ -47,6 +69,11 @@ export default function Layout() {
         handleSelectedCity={handleSelectedCity}
         selectedCity={selectedCity}
       />
+      {
+        weatherData?.list.map((weather)=> (
+          <p>{formatDateTime(new Date(weather.dt_txt))}</p>
+        ))
+      }
     </div>
   );
 }
