@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+
 import SelectedCity from "@/components/Molecules/SelectedCity";
+import { Option } from "@/components/types";
+
+import { formatDateTime } from "@/utils";
+
 import { fetchCities } from "@/services/reservamosApi";
 import { fetchWatherByCity } from "@/services/openWeatherApi";
 import { City, WeatherData } from "@/services/types";
-import { Option } from "@/components/types";
-import { formatDateTime } from "@/app/utils";
 
 export default function Layout() {
   const [selectedCity, setSelectedCity] = useState<string>('');
@@ -61,6 +64,8 @@ export default function Layout() {
     }
   }, [selectedCity]);
 
+  
+
 
   return (
     <div>
@@ -70,8 +75,12 @@ export default function Layout() {
         selectedCity={selectedCity}
       />
       {
-        weatherData?.list.map((weather)=> (
+        weatherData?.list.map((weather)=> (<>
+        {console.log(weather)}
           <p>{formatDateTime(new Date(weather.dt_txt))}</p>
+          {weather.main.temp_min} - {weather.main.temp_max}
+          </>
+
         ))
       }
     </div>

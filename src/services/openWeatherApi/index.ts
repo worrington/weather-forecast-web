@@ -3,10 +3,10 @@ import apiClient from '../apiClient';
 const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 const openWeatherApi = process.env.NEXT_PUBLIC_OPEN_WEATHER_API;
 
-export async function fetchWatherByCity(lat: string, lon: string) {
+export async function fetchWatherByCity(lat: string, lon: string, units?: string) {
   try {
     const response = await apiClient.get(
-     `${openWeatherApi}?lat=${lat}&lon=${lon}&appid=${apiKey}`
+     `${openWeatherApi}?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units ?? "metric"}`
     );
 
     return response.data;

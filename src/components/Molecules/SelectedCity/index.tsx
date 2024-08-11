@@ -1,12 +1,6 @@
 "use client";
 
-import { Option } from '@/components/types';
-
-interface SelectedCityProps {
-  options: Option[];
-  selectedCity: string;
-  handleSelectedCity: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-}
+import { SelectedCityProps } from "@/components/types";
 
 export default function SelectedCity({ options, selectedCity, handleSelectedCity }: SelectedCityProps) {
   return (
