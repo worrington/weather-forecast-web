@@ -14,8 +14,6 @@ export const formatDateTime = (date: Date, locale?: string): string => {
   const options: Intl.DateTimeFormatOptions = { 
     day: '2-digit', 
     month: 'short', 
-    hour: '2-digit', 
-    minute: '2-digit', 
     weekday: 'short' 
   };
   

@@ -3,23 +3,17 @@
 import { useEffect, useMemo, useState } from "react";
 
 import SelectedCity from "@/components/Molecules/SelectedCity";
-import { Option } from "@/components/types";
-
-import { formatDateTime } from "@/utils";
+import { WeatherByDay, Option, TemperatureByTime } from "@/components/types";
 
 import { fetchCities } from "@/services/reservamosApi";
 import { fetchWatherByCity } from "@/services/openWeatherApi";
 import { City, WeatherData } from "@/services/types";
+import WeatherCard from "../WeatherCard";
 
 export default function Layout() {
   const [selectedCity, setSelectedCity] = useState<string>('');
   const [citiesData, setCitiesData] = useState<City[]>([]);
   const [weatherData, setWeatherData] = useState<WeatherData>();
-
-  // Memoized options for cities dropdown
-  const optionsCities: Option[] = useMemo(() => {
-    return citiesData.map(({ id, display }) => ({ id, value: display }));
-  }, [citiesData]);
 
   // Handle city selection
   const handleSelectedCity = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -30,6 +24,38 @@ export default function Layout() {
   const getCityGeolocation = (selectedCity: string) => {
     return citiesData.find(city => city.display === selectedCity);
   };
+
+  // Memoized options for cities dropdown
+  const optionsCities: Option[] = useMemo(() => {
+    return citiesData.map(({ id, display }) => ({ id, value: display }));
+  }, [citiesData]);
+
+  // Group by day
+  const weatherByDay: WeatherByDay[] = useMemo(() => {
+    if (!weatherData) return [];
+
+    const grouped: { [key: string]: TemperatureByTime[] } = {};
+
+    weatherData.list.forEach(item => {
+      const [date, time] = item.dt_txt.split(' '); 
+
+      if (!grouped[date]) {
+        grouped[date] = [];
+      }
+      
+      grouped[date].push({
+        temp_min: item.main.temp_min,
+        temp_max: item.main.temp_max,
+        time
+      });
+    });
+
+    return Object.keys(grouped).map(day => ({
+      day,
+      temperatureByTime: grouped[day]
+    }));
+  }, [weatherData]);
+  
 
   // Fetch cities on component mount
   useEffect(() => {
@@ -64,8 +90,6 @@ export default function Layout() {
     }
   }, [selectedCity]);
 
-  
-
 
   return (
     <div>
@@ -75,13 +99,7 @@ export default function Layout() {
         selectedCity={selectedCity}
       />
       {
-        weatherData?.list.map((weather)=> (<>
-        {console.log(weather)}
-          <p>{formatDateTime(new Date(weather.dt_txt))}</p>
-          {weather.main.temp_min} - {weather.main.temp_max}
-          </>
-
-        ))
+        weatherByDay.map(weather => { return <WeatherCard weather={weather} />})
       }
     </div>
   );
