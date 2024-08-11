@@ -92,15 +92,17 @@ export default function Layout() {
 
 
   return (
-    <div>
+    <div className="p-16 h-lvh">
       <SelectedCity
         options={optionsCities}
         handleSelectedCity={handleSelectedCity}
         selectedCity={selectedCity}
       />
-      {
-        weatherByDay.map(weather => { return <WeatherCard weather={weather} />})
-      }
+      <div className="w-full">
+        {
+         selectedCity && weatherByDay.map(weatherData  => <WeatherCard weatherData={weatherData} />)
+        }
+      </div>
     </div>
   );
 }
