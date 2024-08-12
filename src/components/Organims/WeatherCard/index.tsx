@@ -31,7 +31,6 @@ const WeatherCard = ({ weatherData }: WeatherCardProps) => {
   };
 
   const iconUrl = getWeatherIconUrl(weatherData.temperatureByTime[0].icon);
-
   return (
     <div className="shadow-lg rounded-lg overflow-hidden my-6" style={{backgroundColor: ClimateData[weatherData.temperatureByTime[0].type].color}}>
       <div 
@@ -46,7 +45,7 @@ const WeatherCard = ({ weatherData }: WeatherCardProps) => {
         </div>
         <div className="content-center">
           <h2 className="text-xl font-bold text-white text-shadow capitalize">
-            {formatDateTime(new Date(weatherData.day))}
+            {formatDateTime(weatherData.day)}
           </h2>
           <p className="text-white"> Min {weatherData.temp_min}°C / Max {weatherData.temp_max}°C</p>
         </div>

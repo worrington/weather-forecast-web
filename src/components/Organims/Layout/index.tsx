@@ -15,6 +15,8 @@ export default function Layout() {
   const [citiesData, setCitiesData] = useState<City[]>([]);
   const [weatherData, setWeatherData] = useState<WeatherData>();
 
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
   // Handle city selection
   const handleSelectedCity = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCity(e.target.value);
@@ -37,7 +39,12 @@ export default function Layout() {
     const grouped: { [key: string]: TemperatureByTime[] } = {};
   
     weatherData.list.forEach(item => {
-      const [date, time] = item.dt_txt.split(' ');
+
+      const timeAsUTC = new Date(`${item.dt_txt}Z`);
+      const dataTime = timeAsUTC.toLocaleString('es-MX', {
+        timeZone: userTimeZone})
+
+      const [date, time] = dataTime.split(', ');
   
       if (!grouped[date]) {
         grouped[date] = [];
