@@ -33,11 +33,10 @@ export const timeFormat = (time: string, locale?: string): string => {
   const date = new Date();
 
   const [hours, minutes, seconds] = time.split(":").map(Number);
-;
+
   date.setHours(hours);
   date.setMinutes(minutes);
   date.setSeconds(seconds);
-
 
   const timeFormat = date.toLocaleString(locale ?? 'es-ES', {
     hour: "2-digit",

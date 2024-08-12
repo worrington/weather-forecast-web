@@ -60,7 +60,7 @@ const WeatherCard = ({ weatherData }: WeatherCardProps) => {
             className="flex gap-4 overflow-x-scroll scrollbar-hide scroll-smooth px-8"
           >
             {weatherData.temperatureByTime.map((temperature) => (
-             <TemperatureCard temperature={temperature}/>
+             <TemperatureCard key={temperature.time} temperature={temperature}/>
             ))}
           </div>
 

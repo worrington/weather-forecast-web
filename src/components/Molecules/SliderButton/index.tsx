@@ -2,7 +2,6 @@
 
 import { Direction, SliderButtonProps } from "@/components/types";
 
-
 export default function SliderButton({ icon, direction, scrollSlider }: SliderButtonProps) {
   return (
     <button 

@@ -115,7 +115,7 @@ export default function Layout() {
          selectedCity && <p>Haga click en un día para conocer más detalles sobre el clima.</p>
         }
         {
-         selectedCity && weatherByDay.map(weatherData  => <WeatherCard weatherData={weatherData} />)
+         selectedCity && weatherByDay.map(weatherData  => <WeatherCard key={weatherData.day} weatherData={weatherData} />)
         }
       </div>
     </div>
