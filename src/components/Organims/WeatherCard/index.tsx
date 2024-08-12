@@ -1,8 +1,12 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { WeatherByDay } from "@/components/types";
-import { formatDateTime } from "@/utils";
+import { Climate, ClimateData, Direction, WeatherByDay } from "@/components/types";
+import { formatDateTime, getWeatherIconUrl } from "@/utils";
+import TemperatureCard from "../TemperatureCard";
+import SliderButton from "@/components/Molecules/SliderButton";
+import Image from "next/image";
+
 
 interface WeatherCardProps {
   weatherData: WeatherByDay;
@@ -26,50 +30,41 @@ const WeatherCard = ({ weatherData }: WeatherCardProps) => {
     }
   };
 
+  const iconUrl = getWeatherIconUrl(weatherData.temperatureByTime[0].icon);
+
   return (
-    <div className="weather-card bg-white shadow-lg rounded-lg overflow-hidden">
+    <div className="shadow-lg rounded-lg overflow-hidden my-6" style={{backgroundColor: ClimateData[weatherData.temperatureByTime[0].type].color}}>
       <div 
-        className="weather-card__day p-4 cursor-pointer hover:bg-gray-200"
+        className="p-4 cursor-pointer flex content-center"
         onClick={() => handleDayClick(weatherData.day)}
         role="button"
         tabIndex={0}
         onKeyDown={(e) => e.key === 'Enter' && handleDayClick(weatherData.day)}
       >
-        <h2 className="text-xl font-semibold text-blue-700">
-          {formatDateTime(new Date(weatherData.day))}
-        </h2>
+        <div>
+          <Image src={iconUrl} alt="s" width={150} height={150}/>
+        </div>
+        <div className="content-center">
+          <h2 className="text-xl font-bold text-white text-shadow capitalize">
+            {formatDateTime(new Date(weatherData.day))}
+          </h2>
+          <p className="text-white"> Min {weatherData.temp_min}°C / Max {weatherData.temp_max}°C</p>
+        </div>
       </div>
 
       {expandedDay === weatherData.day && (
         <div className="relative p-4">
-          {/* Slider buttons */}
-          <button 
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white p-2 w-10 h-10 rounded-full flex items-center justify-center"
-            onClick={() => scrollSlider("left")}
-          >
-            {"<"}
-          </button>
-          <button 
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white p-2 w-10 h-10 rounded-full flex items-center justify-center"
-            onClick={() => scrollSlider("right")}
-          >
-            {">"}
-          </button>
-
-          {/* Slider container */}
+          <SliderButton icon="<" direction={Direction.Left} scrollSlider={scrollSlider} />
           <div 
             ref={sliderRef} 
-            className="flex gap-4 overflow-x-scroll scrollbar-hide scroll-smooth px-12"
+            className="flex gap-4 overflow-x-scroll scrollbar-hide scroll-smooth px-8"
           >
             {weatherData.temperatureByTime.map((temperature) => (
-              <div key={temperature.time} className="weather-card__temperature-entry flex-shrink-0 w-64 bg-blue-50 border border-blue-200 rounded-lg p-4 flex flex-col items-center">
-                <p className="text-sm font-medium text-blue-900">{temperature.time}</p>
-                <p className="text-lg font-bold text-blue-800">
-                  {temperature.temp_min}°C / {temperature.temp_max}°C
-                </p>
-              </div>
+             <TemperatureCard temperature={temperature}/>
             ))}
           </div>
+
+          <SliderButton icon=">" direction={Direction.Right} scrollSlider={scrollSlider} />
         </div>
       )}
     </div>

@@ -20,5 +20,35 @@ export const formatDateTime = (date: Date, locale?: string): string => {
   return date.toLocaleDateString(locale ?? 'es-ES', options);
 };
 
+/**
+ * Converts a 24-hour time string (e.g., "21:00:00") into a 12-hour format with AM/PM.
+ *
+ * @param {string} time - The time string in 24-hour format ("HH:MM:SS").
+ * @param {string} [locale='es-ES'] - Optional. The locale to use for formatting the time string.
+ *                                     Defaults to 'es-ES' if not provided.
+ * 
+ * @returns {string} - The formatted time string in 12-hour format with AM/PM (e.g., "9:00 PM").
+ */
+export const timeFormat = (time: string, locale?: string): string => {
+  const date = new Date();
+
+  const [hours, minutes, seconds] = time.split(":").map(Number);
+;
+  date.setHours(hours);
+  date.setMinutes(minutes);
+  date.setSeconds(seconds);
 
 
+  const timeFormat = date.toLocaleString(locale ?? 'es-ES', {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+  
+  return timeFormat;
+};
+
+
+export const getWeatherIconUrl = (iconCode: string): string => {
+  return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+};

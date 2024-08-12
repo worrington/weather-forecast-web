@@ -33,30 +33,41 @@ export default function Layout() {
   // Group by day
   const weatherByDay: WeatherByDay[] = useMemo(() => {
     if (!weatherData) return [];
-
+  
     const grouped: { [key: string]: TemperatureByTime[] } = {};
-
+  
     weatherData.list.forEach(item => {
-      const [date, time] = item.dt_txt.split(' '); 
-
+      const [date, time] = item.dt_txt.split(' ');
+  
       if (!grouped[date]) {
         grouped[date] = [];
       }
-      
+  
       grouped[date].push({
         temp_min: item.main.temp_min,
         temp_max: item.main.temp_max,
-        time
+        temp: item.main.temp,
+        type: item.weather[0].main,
+        icon: item.weather[0].icon,
+        time,
       });
     });
-
-    return Object.keys(grouped).map(day => ({
-      day,
-      temperatureByTime: grouped[day]
-    }));
+  
+    return Object.keys(grouped).map(day => {
+      const temperatures = grouped[day];
+  
+      const temp_min = Math.min(...temperatures.map(temp => temp.temp_min));
+      const temp_max = Math.max(...temperatures.map(temp => temp.temp_max));
+  
+      return {
+        day,
+        temperatureByTime: temperatures,
+        temp_min,
+        temp_max
+      };
+    });
   }, [weatherData]);
   
-
   // Fetch cities on component mount
   useEffect(() => {
     const getCities = async () => {
@@ -92,13 +103,17 @@ export default function Layout() {
 
 
   return (
-    <div className="p-16 h-lvh">
+    <div className="p-8 h-lvh">
+      <h1 className="py-10 text-2xl">Clima</h1>
       <SelectedCity
         options={optionsCities}
         handleSelectedCity={handleSelectedCity}
         selectedCity={selectedCity}
       />
-      <div className="w-full">
+      <div className="w-full pt-12">
+        {
+         selectedCity && <p>Haga click en un día para conocer más detalles sobre el clima.</p>
+        }
         {
          selectedCity && weatherByDay.map(weatherData  => <WeatherCard weatherData={weatherData} />)
         }

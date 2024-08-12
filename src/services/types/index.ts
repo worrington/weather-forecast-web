@@ -1,3 +1,5 @@
+import { Climate } from "@/components/types";
+
 type City = {
   city_slug: string | number | readonly string[] | undefined;
   display: string;
@@ -16,7 +18,12 @@ type WeatherData = {
     main: {
       temp_max: number;
       temp_min: number;
+      temp: number;
     };
+    weather: {
+        main: Climate,
+        icon: string
+    }[],
   }[];
 }
 
