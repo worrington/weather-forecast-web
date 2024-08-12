@@ -1,31 +1,81 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Weather Forecast Web
 
-## Getting Started
+## Descripción
 
-yarn install
+Este es un proyecto web para predecir el clima en diferentes ciudades utilizando Next.js. Permite a los usuarios comparar el pronóstico del clima para los próximos 5 días en varios destinos.
 
-- run the development server:
-yarn dev
+## Tecnologías
 
-```
+- [Next.js](https://nextjs.org/)
+- [React](https://reactjs.org/)
+- [TailwindCSS](https://tailwindcss.com/)
+- [OpenWeather API](https://openweathermap.org/api)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Requisitos
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Node.js**: 16.x o superior
+- **Yarn**: 1.22 o superior (alternativamente, puedes usar npm)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Instalación
 
-## Learn More
+Sigue estos pasos para configurar el proyecto en tu entorno local:
 
-To learn more about Next.js, take a look at the following resources:
+1. **Clona el Repositorio**:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    ```bash
+    git clone https://github.com/worrington/weather-forecast-web.git
+    ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+2. **Navega al Directorio del Proyecto**:
 
-## Deploy on Vercel
+    ```bash
+    cd weather-forecast-web
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Instala las Dependencias**:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+    ```bash
+    yarn install
+    ```
+
+4. **Configura el Archivo de Variables de Entorno**:
+
+    Srchivo `.env.local` en la raíz del proyecto y añade las siguientes variables:
+
+    ```env
+    NEXT_PUBLIC_OPENWEATHER_API_KEY=tu_api_key_de_openweathermap
+    NEXT_PUBLIC_RESERVAMOS_API = https://search.reservamos.mx/api/v2/places
+    NEXT_PUBLIC_OPEN_WEATHER_API = https://api.openweathermap.org/data/2.5/forecast
+    ```
+
+    Asegúrate de reemplazar `tu_api_key_de_openweathermap` con la clave de API real.
+
+5. **Ejecuta el Proyecto**:
+
+    ```bash
+    yarn dev
+    ```
+
+## Uso
+
+1. **Accede al Proyecto en tu Navegador**:
+
+    Abre `http://localhost:3000` en tu navegador para ver la aplicación en modo de desarrollo.
+
+2. **Interfaz de Usuario**:
+
+    - Selecciona una ciudad.
+    - Consulta el pronóstico del clima para los próximos 5 días.
+
+
+## Contribuciones
+
+¡Las contribuciones son bienvenidas! Por favor, sigue estos pasos para contribuir:
+
+1. Haz un fork del repositorio.
+2. Crea una rama nueva para tu característica o corrección.
+3. Envía un pull request.
+
+## Licencia
+
+Este proyecto está licenciado bajo la [MIT License](LICENSE).
